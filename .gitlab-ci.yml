@@ -1,5 +1,5 @@
 default:
-  image: alpine:3.4
+  image: ruby:2.6
 
 build-job:
   stage: build
