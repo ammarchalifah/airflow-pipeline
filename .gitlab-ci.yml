@@ -29,4 +29,4 @@ deploy-prod:
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS "pwd && ls -la && git config --global --replace-all user.name "Ammar Chalifah" && git config --global --replace-all user.email "ammar.chalifah@gmail.com" && if [ -d airflow-pipeline ]; then cd airflow-pipeline && git pull; else git clone https://ammarchalifah:sixsome1598Edu@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && docker-compose up --remove-orphans --build  ; fi"
+    - ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS "pwd && ls -la && git config --global --replace-all user.name "Ammar Chalifah" && git config --global --replace-all user.email "ammar.chalifah@gmail.com" && if [ -d airflow-pipeline ]; then cd airflow-pipeline && git pull; else git clone https://ammarchalifah:sixsome1598Edu@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && docker-compose up --remove-orphans --build -d; fi"
