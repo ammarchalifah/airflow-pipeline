@@ -1,5 +1,5 @@
 default:
-  image: ruby:2.6
+  image: ubuntu:latest
 
 build-job:
   stage: build
@@ -7,6 +7,11 @@ build-job:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
     - echo "I am here" >> log-gitlab-runner-yawn.txt
+  artifacts:
+    paths:
+      - log-gitlab-runner-yawn.txt
+    expire_in:
+      - 3 days
 
 deploy-prod:
   stage: deploy
@@ -20,6 +25,6 @@ deploy-prod:
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh -i $SSH_KEY_EC2 ubuntu@$EC2_ADDRESS
+    - ssh -i $SSH_KEY_EC2 ubuntu@${EC2_ADDRESS}
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - echo pwd >> /gitlab-landing-loc.txt
