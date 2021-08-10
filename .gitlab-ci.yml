@@ -22,14 +22,12 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - cat $SSH_KEY_EC2
-    - echo $(cat $SSH_KEY_EC2) >> ~/.ssh/ammaru.pem
-    - chmod 400 ~/.ssh/ammaru.pem
-    - cat ~/.ssh/ammaru.pem
+    - chmod 400 $SSH_KEY_EC2
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS
+    - ssh -i $SSH_KEY_EC2 -v ubuntu@$EC2_ADDRESS
     - pwd
     - ls -la
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
