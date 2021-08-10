@@ -22,6 +22,7 @@ deploy-prod:
     - chmod 700 ~/.ssh
     - echo $SSH_KEY_EC2 >> ~/.ssh/ammaru.pem
     - chmod 400 ~/.ssh/ammaru.pem
+    - echo ~/.ssh/ammaru.pem
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get -y install rsync
