@@ -20,10 +20,11 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - chmod 400 $SSH_KEY_EC2
+    - echo $SSH_KEY_EC2 >> ~/.ssh/ammaru.pem
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - ssh -i -tt -v $SSH_KEY_EC2 ubuntu@$EC2_ADDRESS
+    - ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - echo pwd >> /gitlab-landing-loc.txt
