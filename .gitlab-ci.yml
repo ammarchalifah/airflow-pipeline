@@ -15,11 +15,13 @@ build-job:
 deploy-prod:
   stage: deploy
   before_script:
-    - ls
+    - ls -la
+    - pwd
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
+    - echo $SSH_KEY_EC2
     - echo $SSH_KEY_EC2 >> ~/.ssh/ammaru.pem
     - chmod 400 ~/.ssh/ammaru.pem
     - cat ~/.ssh/ammaru.pem
@@ -28,5 +30,7 @@ deploy-prod:
     - apt-get -y install rsync
   script:
     - ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS
+    - pwd
+    - ls -la
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - echo pwd >> /gitlab-landing-loc.txt
