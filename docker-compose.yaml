@@ -59,8 +59,8 @@ x-airflow-common:
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
   volumes:
     - ./dags:/opt/airflow/dags
-    # - ./logs:/opt/airflow/logs
-    # - ./plugins:/opt/airflow/plugins
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     redis:
@@ -96,7 +96,7 @@ services:
 
   airflow-webserver:
     <<: *airflow-common
-    command: webserver -D
+    command: webserver
     ports:
       - 8080:8080
     healthcheck:
@@ -108,7 +108,7 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
-    command: scheduler -D
+    command: scheduler
     healthcheck:
       test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
       interval: 10s
