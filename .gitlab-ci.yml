@@ -24,8 +24,6 @@ deploy-prod:
     - apt-get update -y
     - apt-get -y install rsync
   script:
-    - echo $EC2_ADDRESS
-    - echo tesa$EC2_ADDRESS
-    - ssh -i -tt $SSH_KEY_EC2 ubuntu@$EC2_ADDRESS
+    - ssh -i -tt -v $SSH_KEY_EC2 ubuntu@$EC2_ADDRESS
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - echo pwd >> /gitlab-landing-loc.txt
