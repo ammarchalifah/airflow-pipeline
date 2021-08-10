@@ -21,8 +21,8 @@ deploy-prod:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo $SSH_KEY_EC2
-    - echo $SSH_KEY_EC2 >> ~/.ssh/ammaru.pem
+    - cat $SSH_KEY_EC2
+    - echo $(cat $SSH_KEY_EC2) >> ~/.ssh/ammaru.pem
     - chmod 400 ~/.ssh/ammaru.pem
     - cat ~/.ssh/ammaru.pem
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
