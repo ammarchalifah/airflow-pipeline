@@ -6,16 +6,22 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
-
-test-job:
-  stage: test
-  script: 
-    - echo "This job tests something"
+    - echo "I am here" >> log-gitlab-runner-yawn.txt
 
 deploy-prod:
   stage: deploy
   only:
     - main
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - chmod 400 $SSH_KEY_EC2
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - apt-get update -y
+    - apt-get -y install rsync
   script:
+    - ssh -i $SSH_KEY_EC2 ubuntu@$EC2_ADDRESS
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - echo $SSH_KEY_EC2
+    - echo pwd >> /gitlab-landing-loc.txt
