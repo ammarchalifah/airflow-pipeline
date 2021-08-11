@@ -10,7 +10,7 @@ args = {
 }
 
 with DAG(
-    dag_id='dag_bash_test',
+    dag_id='dag_bash_test_second',
     default_args=args,
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),

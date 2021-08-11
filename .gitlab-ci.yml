@@ -3,6 +3,8 @@ default:
 
 build-job:
   stage: build
+  only:
+    - main
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
