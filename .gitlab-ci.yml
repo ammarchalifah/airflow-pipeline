@@ -39,6 +39,6 @@ deploy-prod:
           if [ docker ps | grep -q keyword ]; 
             then docker-compose down && docker-compose up -d --build; 
             else docker-compose up -d --build; fi; 
-        else git clone https://$GITLAB_USERNAME:$GITLAB_PASSWORD@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && chmod 777 logs && chmod 777 plugins && docker-compose up airflow-init && docker-compose up -d --build; 
+        else git clone https://ammarchalifah:sixsome1598Edu@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && chmod 777 logs && chmod 777 plugins && docker-compose up airflow-init && docker-compose up -d --build; 
       fi
       "
