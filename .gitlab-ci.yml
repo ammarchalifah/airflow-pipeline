@@ -35,6 +35,10 @@ deploy-prod:
       git config --global --replace-all user.name "Ammar Chalifah" &&
       git config --global --replace-all user.email "ammar.chalifah@gmail.com" &&
       if [ -d airflow-pipeline ]; 
-        then cd airflow-pipeline && git pull && if [ docker ps | grep -q keyword ]; then docker-compose down && docker-compose up -d --build; else docker-compose up -d --build; fi;; 
-        else git clone https://$GITLAB_USERNAME:$GITLAB_PASSWORD@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && chmod 777 logs && chmod 777 plugins && docker-compose up airflow-init && docker-compose up -d --build; fi
+        then cd airflow-pipeline && git pull && 
+          if [ docker ps | grep -q keyword ]; 
+            then docker-compose down && docker-compose up -d --build; 
+            else docker-compose up -d --build; fi; 
+        else git clone https://$GITLAB_USERNAME:$GITLAB_PASSWORD@gitlab.com/marukun/airflow-pipeline.git && cd airflow-pipeline && chmod 777 logs && chmod 777 plugins && docker-compose up airflow-init && docker-compose up -d --build; 
+      fi
       "
