@@ -39,9 +39,9 @@ deploy-prod:
       && git status
       && sudo git checkout -- .
       && git checkout main
+      && sudo git stash
       && sudo git pull
-      && git checkout main
-      && sudo git pull --rebase
+      && sudo git stash pop
       && git status
       && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
       && sed -i s:%AIRFLOW_GID%:0:g .env
