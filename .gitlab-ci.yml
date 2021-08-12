@@ -3,8 +3,6 @@ default:
 
 build-job:
   stage: build
-  only:
-    - main
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
@@ -40,7 +38,7 @@ deploy-prod:
       ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
       "
       if [ -d airflow-pipeline ]; 
-        then cd airflow-pipeline 
+        then cd airflow-pipeline
         && git checkout master
         && git pull --rebase
         && git status
