@@ -37,8 +37,8 @@ deploy-prod:
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
       && git status
-      && git add ./logs ./plugins ./dags
-      && git commit -m "log commit"\
+      && sudo git add ./logs ./plugins ./dags
+      && sudo git commit -m "log commit"\
       && git checkout main
       && sudo git stash
       && git pull --rebase
