@@ -9,9 +9,9 @@ build-job:
     expire_in: 3 days
 
 deploy-prod:
-  stage: deploy
   only:
     - main
+  stage: deploy
   before_script:
     - ls -la
     - pwd
