@@ -30,12 +30,12 @@ deploy-prod:
     - apt-get -y install rsync
   script:
     - >- 
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
       "git config --global --replace-all user.name "Ammar Chalifah"
       && git config --global --replace-all user.email "ammar.chalifah@gmail.com"
       "
     - >-
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
       "
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
@@ -57,7 +57,7 @@ deploy-prod:
       && docker-compose up airflow-init; 
       fi "
     - >-
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
       "
       cd airflow-pipeline &&
       if [ docker ps | grep -q keyword ]; 
