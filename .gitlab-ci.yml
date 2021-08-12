@@ -39,6 +39,7 @@ deploy-prod:
       && git status
       && git add ./logs
       && git add ./plugins
+      && git commit -m "log commit"
       && git checkout -- .
       && git checkout main
       && git pull --rebase
