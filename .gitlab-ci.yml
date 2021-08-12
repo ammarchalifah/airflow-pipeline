@@ -37,6 +37,8 @@ deploy-prod:
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
       && git status
+      && git add ./logs
+      && git add ./plugins
       && git checkout -- .
       && git checkout main
       && git pull --rebase
