@@ -6,14 +6,12 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
-    - echo "I am here" >> log-gitlab-runner-yawn.txt
-  artifacts:
-    paths:
-      - log-gitlab-runner-yawn.txt
     expire_in: 3 days
 
 deploy-prod:
   stage: deploy
+  only:
+    - main
   before_script:
     - ls -la
     - pwd
@@ -30,12 +28,12 @@ deploy-prod:
     - apt-get -y install rsync
   script:
     - >- 
-      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
       'git config --global --replace-all user.name "Ammar Chalifah"
       && git config --global --replace-all user.email "ammar.chalifah@gmail.com"
       '
     - >-
-      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
       '
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
@@ -57,9 +55,8 @@ deploy-prod:
       && docker-compose up airflow-init; 
       fi'
     - >-
-      ssh -i ~/.ssh/ammaru.pem -v ubuntu@$EC2_ADDRESS \
-      '
-      cd airflow-pipeline &&
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      'cd airflow-pipeline &&
       if [ docker ps | grep -q keyword ]; 
       then docker-compose down && docker-compose up -d --build; 
       else docker-compose up -d --build; 
