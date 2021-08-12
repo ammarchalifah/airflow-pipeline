@@ -6,13 +6,10 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - echo $_AIRFLOW_WWW_USER_USERNAME
-    - echo "I am here" >> log-gitlab-runner-yawn.txt
-  artifacts:
-    paths:
-      - log-gitlab-runner-yawn.txt
-    expire_in: 3 days
 
 deploy-prod:
+  only:
+    - main
   stage: deploy
   before_script:
     - ls -la
@@ -30,37 +27,36 @@ deploy-prod:
     - apt-get -y install rsync
   script:
     - >- 
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
-      "git config --global --replace-all user.name "Ammar Chalifah"
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      'git config --global --replace-all user.name "Ammar Chalifah"
       && git config --global --replace-all user.email "ammar.chalifah@gmail.com"
-      "
+      '
     - >-
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
-      "
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      '
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
       && git checkout master
       && git pull --rebase
       && git status
-      && sed -i s:%AIRFLOW_UID%:"'$(id -u)'":g .env
+      && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
       && sed -i s:%AIRFLOW_GID%:0:g .env
-      && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:"'$_AIRFLOW_WWW_USER_USERNAME'":g .env
-      && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:"'$_AIRFLOW_WWW_USER_PASSWORD'":g .env; 
-      else git clone https://"'$GITLAB_USERNAME'":"'$GITLAB_PASSWORD'"@gitlab.com/marukun/airflow-pipeline.git
+      && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:'"$_AIRFLOW_WWW_USER_USERNAME"':g .env
+      && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:'"$_AIRFLOW_WWW_USER_PASSWORD"':g .env; 
+      else git clone https://'"$GITLAB_USERNAME"':'"$GITLAB_PASSWORD"'@gitlab.com/marukun/airflow-pipeline.git
       && cd airflow-pipeline 
       && ls -la 
       && chmod 777 logs
-      && sed -i s:%AIRFLOW_UID%:"'$(id -u)'":g .env
+      && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
       && sed -i s:%AIRFLOW_GID%:0:g .env
-      && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:"'$_AIRFLOW_WWW_USER_USERNAME'":g .env
-      && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:"'$_AIRFLOW_WWW_USER_PASSWORD'":g .env
+      && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:'"$_AIRFLOW_WWW_USER_USERNAME"':g .env
+      && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:'"$_AIRFLOW_WWW_USER_PASSWORD"':g .env
       && docker-compose up airflow-init; 
-      fi "
+      fi'
     - >-
-      ssh -i -v ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
-      "
-      cd airflow-pipeline &&
+      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      'cd airflow-pipeline &&
       if [ docker ps | grep -q keyword ]; 
       then docker-compose down && docker-compose up -d --build; 
       else docker-compose up -d --build; 
-      fi;"
+      fi;'
