@@ -37,12 +37,12 @@ deploy-prod:
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
       && git status
-      && git add ./logs
-      && git add ./plugins
-      && git commit -m "log commit"
-      && git checkout -- .
+      && git add ./logs ./plugins ./dags
+      && git commit -m "log commit"\
       && git checkout main
+      && sudo git stash
       && git pull --rebase
+      && sudo git stash pop
       && git status
       && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
       && sed -i s:%AIRFLOW_GID%:0:g .env
