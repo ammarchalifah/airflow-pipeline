@@ -36,6 +36,8 @@ deploy-prod:
       '
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
+      && git status
+      && git checkout -- .
       && git checkout main
       && git pull --rebase
       && git status
