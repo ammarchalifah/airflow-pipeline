@@ -31,8 +31,11 @@ deploy-prod:
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
       && git status
+      && git restore .env
       && git add .
-      && git pull --rebase
+      && git stash
+      && git pull
+      && git pop
       && git status
       && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
       && sed -i s:%AIRFLOW_GID%:0:g .env
