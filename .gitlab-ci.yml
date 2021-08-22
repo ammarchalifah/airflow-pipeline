@@ -32,8 +32,6 @@ deploy-prod:
       then cd airflow-pipeline
       && git status
       && git restore .env
-      && git add .
-      && git commit -m "cache and logs"
       && git pull --rebase
       && git status
       && sed -i s:%AIRFLOW_UID%:'"$(id -u)"':g .env
