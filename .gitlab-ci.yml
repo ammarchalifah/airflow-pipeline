@@ -2,6 +2,8 @@ default:
   image: ubuntu:latest
 
 deploy-prod:
+  only:
+    - main
   stage: deploy
   before_script:
     - ls -la
