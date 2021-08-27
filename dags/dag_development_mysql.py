@@ -27,6 +27,7 @@ dev_query_mysql = PythonOperator(
         'user':os.environ['AMMARCHALIFAH_MYSQL_USER'], 
         'password':os.environ['AMMARCHALIFAH_MYSQL_PASSWORD'],
         'database':'ammarch1_staticdata',
-        'query':'select * from githubrepos'},
+        'query':'select * from githubrepos',
+        'execution_type':'pandas'},
     dag = dag
 )
