@@ -88,7 +88,7 @@ def scrape_official_webtoons(host, port, user, password, database):
     logging.info(df.info())
 
     conn = MySQLConnection(host=host, port=port, user=user, password=password, database=database)
-    df.to_sql(con=conn, name='webtoon_officials', flavor='mysql', if_exists='append', index=False)
+    df.to_sql(con=conn, name='webtoon_officials', if_exists='append', index=False)
     conn.close()
 
 if __name__ == '__main__':
