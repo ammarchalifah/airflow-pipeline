@@ -20,8 +20,8 @@ dag = DAG(
     tags=['webtoon'],
 )
 
-dev_scrape_webtoon_officials = PythonOperator(
-    task_id = 'dev_scrape_webtoon_officials',
+scrape_webtoon_officials = PythonOperator(
+    task_id = 'scrape_webtoon_officials',
     python_callable = scrape_official_webtoons,
     op_kwargs = {'host':'ammarchalifah.com','port':3306,
         'user':os.environ['AMMARCHALIFAH_MYSQL_USER'], 

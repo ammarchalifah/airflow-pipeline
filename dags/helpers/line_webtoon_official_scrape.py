@@ -1,11 +1,12 @@
 import requests
 import logging
 import datetime
+import pymysql
 
 import pandas as pd
 
 from bs4 import BeautifulSoup
-from mysql.connector import MySQLConnection, Error
+from sqlalchemy import create_engine
 
 def scrape_official_webtoons(host, port, user, password, database):
     # set today's date
@@ -87,9 +88,8 @@ def scrape_official_webtoons(host, port, user, password, database):
     logging.info(df)
     logging.info(df.info())
 
-    conn = MySQLConnection(host=host, port=port, user=user, password=password, database=database)
-    df.to_sql(con=conn, name='webtoon_officials', if_exists='append', index=False)
-    conn.close()
+    engine = create_engine('mysql+pymysql://'+user+':'+password+'@'+host+'/'+database)
+    df.to_sql(con=engine, name='webtoon_officials', if_exists='append', index=False)
 
 if __name__ == '__main__':
     scrape_official_webtoons()
