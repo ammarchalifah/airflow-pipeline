@@ -17,7 +17,7 @@ dag = DAG(
     schedule_interval='0 10,11,12,13,14 * * *',
     start_date=datetime.datetime(2021,8,30),
     dagrun_timeout=timedelta(minutes=60),
-    tags=['test_dag'],
+    tags=['webtoon'],
 )
 
 dev_scrape_webtoon_officials = PythonOperator(
