@@ -14,8 +14,8 @@ args = {
 dag = DAG(
     dag_id='dag_webtoon',
     default_args=args,
-    schedule_interval='0 10,11 * * *',
-    start_date=datetime.datetime(2021,8,30),
+    schedule_interval='0 9,10,11 * * *',
+    start_date=datetime.datetime(2021,8,29),
     dagrun_timeout=timedelta(minutes=60),
     tags=['webtoon'],
 )
