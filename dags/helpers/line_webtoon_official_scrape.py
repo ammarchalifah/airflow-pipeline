@@ -24,7 +24,8 @@ def scrape_official_webtoons(host, port, user, password, database):
                 'subscribers':[],
                 'star_score':[],
                 'unsuitable_for_children':[],
-                'date':[]
+                'date':[],
+                'title_id':[]
                 }
 
     genre_elements = results.find_all("ul", class_="card_lst")
@@ -80,6 +81,7 @@ def scrape_official_webtoons(host, port, user, password, database):
             webtoons['subscribers'].append(webtoon_subscribers)
             webtoons['star_score'].append(webtoon_star_score)
             webtoons['date'].append(today)
+            webtoons['title_id'].append(webtoon_url.split('=')[-1])
     
     df = pd.DataFrame.from_dict(webtoons)
     logging.info(df)
@@ -87,7 +89,6 @@ def scrape_official_webtoons(host, port, user, password, database):
 
     conn = MySQLConnection(host=host, port=port, user=user, password=password, database=database)
     df.to_sql(con=conn, name='webtoon_officials', flavor='mysql', if_exists='append', index=False)
-
     conn.close()
 
 if __name__ == '__main__':
