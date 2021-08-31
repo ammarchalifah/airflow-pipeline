@@ -1,21 +1,25 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 import os
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-import datetime
 
 from helpers.line_webtoon_official_scrape import scrape_official_webtoons
 
 args = {
     'owner': 'Ammar Chalifah',
+    'email':['ammar.chalifah@gmail.com'],
+    'email_on_failure':True,
+    'email_on_retry':False,
+    'retries':10,
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG(
     dag_id='dag_webtoon',
     default_args=args,
-    schedule_interval='0 9,10,11 * * *',
-    start_date=datetime.datetime(2021,8,29),
+    schedule_interval='0 9 * * *',
+    start_date=datetime(2021,8,29),
     dagrun_timeout=timedelta(minutes=60),
     tags=['webtoon'],
 )
