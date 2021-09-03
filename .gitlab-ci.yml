@@ -13,20 +13,20 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - cat $SSH_KEY_EC2
-    - echo "$(cat $SSH_KEY_EC2)" >> ~/.ssh/ammaru.pem
-    - chmod 400 ~/.ssh/ammaru.pem
-    - cat ~/.ssh/ammaru.pem
+    - echo "$(cat $SSH_KEY_EC2)" >> ~/.ssh/ssh-key.pem
+    - chmod 400 ~/.ssh/ssh-key.pem
+    - cat ~/.ssh/ssh-key.pem
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - apt-get update -y
     - apt-get -y install rsync
   script:
     - >- 
-      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
-      'git config --global --replace-all user.name "Ammar Chalifah"
-      && git config --global --replace-all user.email "ammar.chalifah@gmail.com"
+      ssh -i ~/.ssh/ssh-key.pem ubuntu@$EC2_ADDRESS \
+      'git config --global --replace-all user.name "User Name"
+      && git config --global --replace-all user.email "email@email.com"
       '
     - >-
-      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ssh-key.pem ubuntu@$EC2_ADDRESS \
       '
       if [ -d airflow-pipeline ]; 
       then cd airflow-pipeline
@@ -38,11 +38,7 @@ deploy-prod:
       && sed -i s:%AIRFLOW_GID%:0:g .env
       && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:'"$_AIRFLOW_WWW_USER_USERNAME"':g .env
       && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:'"$_AIRFLOW_WWW_USER_PASSWORD"':g .env
-      && sed -i s:%SMTP_EMAIL_ADDRESS%:'"$SMTP_EMAIL_ADDRESS"':g .env
-      && sed -i s:%SMTP_EMAIL_PASSWORD%:'"$SMTP_EMAIL_PASSWORD"':g .env
-      && sed -i s:%AMMARCHALIFAH_MYSQL_USER%:'"$AMMARCHALIFAH_MYSQL_USER"':g .env
-      && sed -i s:%AMMARCHALIFAH_MYSQL_PASSWORD%:'"$AMMARCHALIFAH_MYSQL_PASSWORD"':g .env;
-      else git clone https://'"$GITLAB_USERNAME"':'"$GITLAB_PASSWORD"'@gitlab.com/marukun/airflow-pipeline.git
+      else git clone https://'"$GITLAB_USERNAME"':'"$GITLAB_PASSWORD"'@gitlab.com/gitlab-group/gitlab-project.git
       && cd airflow-pipeline 
       && ls -la 
       && chmod 777 logs
@@ -50,14 +46,10 @@ deploy-prod:
       && sed -i s:%AIRFLOW_GID%:0:g .env
       && sed -i s:%_AIRFLOW_WWW_USER_USERNAME%:'"$_AIRFLOW_WWW_USER_USERNAME"':g .env
       && sed -i s:%_AIRFLOW_WWW_USER_PASSWORD%:'"$_AIRFLOW_WWW_USER_PASSWORD"':g .env
-      && sed -i s:%SMTP_EMAIL_ADDRESS%:'"$SMTP_EMAIL_ADDRESS"':g .env
-      && sed -i s:%SMTP_EMAIL_PASSWORD%:'"$SMTP_EMAIL_PASSWORD"':g .env
-      && sed -i s:%AMMARCHALIFAH_MYSQL_USER%:'"$AMMARCHALIFAH_MYSQL_USER"':g .env
-      && sed -i s:%AMMARCHALIFAH_MYSQL_PASSWORD%:'"$AMMARCHALIFAH_MYSQL_PASSWORD"':g .env
       && docker-compose up airflow-init; 
       fi'
     - >-
-      ssh -i ~/.ssh/ammaru.pem ubuntu@$EC2_ADDRESS \
+      ssh -i ~/.ssh/ssh-key.pem ubuntu@$EC2_ADDRESS \
       'cd airflow-pipeline &&
       if [ docker ps | grep -q keyword ]; 
       then docker-compose down && docker-compose up -d --build; 
