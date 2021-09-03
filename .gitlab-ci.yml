@@ -22,7 +22,7 @@ deploy-prod:
   script:
     - >- 
       ssh -i ~/.ssh/ssh-key.pem ubuntu@$EC2_ADDRESS \
-      'git config --global --replace-all user.name "User Name"
+      'git config --global --replace-all user.name "Full Name"
       && git config --global --replace-all user.email "email@email.com"
       '
     - >-
